@@ -5,12 +5,12 @@ import os
 pd.set_option('display.max_columns', None)
 
 def get_gen_list():
-    gene_list = list(pd.read_csv("../../../gdc_data/gene_breast.tsv", delimiter="\t", low_memory=False)["ENSG"])
+    gene_list = list(pd.read_csv("../../../../gdc_data/gene_breast.tsv", delimiter="\t", low_memory=False)["ENSG"])
     gene_list.append("tumor_stage")
     return gene_list
 
 def get_data_df():
-    return pd.read_csv("../../../gdc_data/last_file.csv", delimiter="\t", index_col=0, low_memory=False)
+    return pd.read_csv("../../../../gdc_data/last_file.csv", delimiter="\t", index_col=0, low_memory=False)
 
 def filter_by_col(pd_df, col_list):
     pd_df1 = pd_df.copy()
