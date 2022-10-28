@@ -6,7 +6,24 @@ import numpy as np
 from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 import umap.umap_ as umap
+import pandas as pd
 
+
+
+def no_dim_red(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Return dataframe as it is
+    :param df: dataframe
+    :return: same dataframe
+    """
+    return df
+
+
+# def clean_dataset(df):
+#     assert isinstance(df, pd.DataFrame), "df needs to be a pd.DataFrame"
+#     df.dropna(inplace=True)
+#     indices_to_keep = ~df.isin([np.nan, np.inf, -np.inf]).any(1)
+#     return df[indices_to_keep].astype(np.float64)
 
 def run_pca(df: pd.DataFrame, confidence: float = 0.90) -> pd.DataFrame:
     """
@@ -17,6 +34,15 @@ def run_pca(df: pd.DataFrame, confidence: float = 0.90) -> pd.DataFrame:
     :param df: dataset on which PCA should be run
     :return: pca return
     """
+    # # Create the Scaler object
+    # scaler = StandardScaler()
+    # #
+    # data_numeric = pd.DataFrame(df)
+    # # Fit your data on the scaler object
+    # data_numeric_standardized = scaler.fit_transform(data_numeric)
+    # data_numeric_standardized = pd.DataFrame(data_numeric_standardized, columns=data_numeric.columns)
+    # data_numeric_standardized = clean_dataset(df)
+
     pca = PCA(confidence)
     data_numeric_pca = pca.fit_transform(df)
 
@@ -50,11 +76,12 @@ def variance_select(x: pd.DataFrame, threshold: int = 500):
     selector = VarianceThreshold(threshold)
     selector.fit(x)
 
-    x_n = X[X.columns[selector.get_support()]]
+    x_n = x[x.columns[selector.get_support()]]
     return x_n
 
 
 feature_select_methods = {
+    # "no_dim_reduction": no_dim_red,
     "pca": run_pca,
     "umap": run_umap,
     "var": variance_select,

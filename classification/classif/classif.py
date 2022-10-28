@@ -37,8 +37,11 @@ def run_nn_classifier(x_train: pd.DataFrame, y_train: pd.DataFrame) -> dict:
                           refit='accuracy', return_train_score=True, n_jobs=4)
     clf_nn.fit(x_train, y_train)
 
-    print(dict(clf_nn.cv_results_))
-    return 0
+    res_df = pd.DataFrame(clf_nn.cv_results_)
+    res_df1 = res_df.sort_values(by='rank_test_accuracy')[['rank_test_accuracy', 'mean_test_precision','mean_test_recall']].iloc[0]
+    res_df2 = res_df1.to_dict()
+    res_df2["f1"] = _calculate_f1(res_df2['mean_test_precision'], res_df2['mean_test_recall'])
+    return res_df2
 
 
 def run_tree(x_train: pd.DataFrame, y_train: pd.DataFrame):
@@ -89,9 +92,9 @@ def run_linear_model():
 
 classifiers_dict = {
     "nn": run_nn_classifier,
-    "tree": run_tree,
-    "k_neighbours": run_k_neighbours,
-    "svm": run_svm,
-    "bayesian": run_bayesian,
-    "linear_model": "linear model",
+    # "tree": run_tree,
+    # "k_neighbours": run_k_neighbours,
+    # "svm": run_svm,
+    # "bayesian": run_bayesian,
+    # "linear_model": "linear model",
 }

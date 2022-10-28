@@ -80,6 +80,8 @@ def log2_transform(x: pd.DataFrame) -> pd.DataFrame:
     return x.transform(lambda x1: np.log2(x1 + 1))
 
 
+# One more normalization: X_norm2 = X.apply(lambda iterator: ((iterator - iterator.mean())/iterator.std()).round(2))
+
 normal_funct = {
     "no_norm": no_norm,
     "min_max_norm": min_max_norm,
