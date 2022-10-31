@@ -12,6 +12,8 @@ import numpy as np
 from sklearn.preprocessing import RobustScaler
 from sklearn.preprocessing import StandardScaler
 
+from sklearn.preprocessing import MinMaxScaler
+
 
 def no_norm(x: pd.DataFrame) -> pd.DataFrame:
     """
@@ -31,8 +33,11 @@ def min_max_norm(x: pd.DataFrame) -> pd.DataFrame:
     :param x: initial dataframeS
     :return: normalized dataframe
     """
-    return (x - x.min()) / (x.max() - x.min())
+    scaler = MinMaxScaler()
+    scaler.fit(x)
 
+    # return (x - x.min()) / (x.max() - x.min())
+    return scaler.transform(x)
 
 def z_score_norm(x: pd.DataFrame) -> pd.DataFrame:
     """

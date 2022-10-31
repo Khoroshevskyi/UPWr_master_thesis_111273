@@ -11,6 +11,7 @@ from normalization import normal_funct
 from dim_red import feature_select_methods
 from classif import classifiers_dict
 
+from csv import DictWriter
 
 
 _LOGGER = logmuse.init_logger(name="analysis")
@@ -24,6 +25,34 @@ coloredlogs.install(
 # X_train, X_test, y_train, y_test = train_test_split(X_pca, y, random_state=15)
 # print(f'Train: {X_train.shape}')
 # print(f'Test: {X_test.shape}')
+
+
+class AddRecord:
+    def __init__(self, file_path: str):
+        self.file_path = file_path
+        col_names = {"feature_selection": "feature_selection",
+                     "normalization": "normalization",
+                     "dim_red": "dim_red",
+                     "classification": "classification",
+                     "check_score": "check_score",
+                     "status": "status",
+                     "new": "new",
+                     }
+        self._fild_names = list(col_names.keys())
+
+        self.append(col_names)
+
+
+    def append(self,  record: dict):
+        with open(self.file_path, 'a+') as f_object:
+            dictwriter_object = DictWriter(f_object, fieldnames=self._fild_names)
+
+            _LOGGER.info(f"Writing new row: {record}")
+            dictwriter_object.writerow(record)
+
+            f_object.close()
+
+add_record = AddRecord("try.csv")
 
 
 def read_data(data_path: str = "/home/bnt4me/MasterTh/gdc_data/last_file.csv") -> Tuple[pd.DataFrame, pd.DataFrame]:
@@ -96,59 +125,67 @@ def run_all_classification():
                     data_after_norm = normal_funct[norm_f](processed_data)
 
                     _LOGGER.info(f"Running Dim Reduction:")
-                    try:
-                        for dim_red_func in feature_select_methods:
-                            __dim = dim_red_func
+                    for dim_red_func in feature_select_methods:
+                        __dim = dim_red_func
+                        try:
                             _LOGGER.info(f"Dim red function: {dim_red_func}")
                             data_after_dim = feature_select_methods[dim_red_func](data_after_norm)
 
                             _LOGGER.info(f"Now goes classification:")
                             for classifyer in classifiers_dict:
                                 __class = classifyer
-                                _LOGGER.info(f"Dim red function: {dim_red_func}")
-                                classifiers_dict[classifyer](data_after_dim, y_train)
+                                try:
+                                    _LOGGER.info(f"Dim red function: {dim_red_func}")
+                                    check_score = classifiers_dict[classifyer](data_after_dim, y_train)
 
+                                    add_record.append(
+                                        {
+                                            "feature_selection": __selection,
+                                            "normalization": __norm,
+                                            "dim_red": __dim,
+                                            "classification": __class,
+                                            "check_score": check_score,
+                                            "status": "Pass",
+                                        })
+                                except Exception:
+                                    add_record.append({
+                                        "feature_selection": __selection,
+                                        "normalization": __norm,
+                                        "dim_red": __dim,
+                                        "classification": __class,
+                                        "check_score": "",
+                                        "status": "Error in  classification",
+                                    })
 
-
-                            list_of_results.append(
-                                {
-                                    "feature_selection": __selection,
-                                    "normalization": __norm,
-                                    "dim_red": __dim,
-                                    "classification": "",
-                                    "f1-score": "",
-                                    "status": "Pass",
-                                })
-                    except Exception:
-                        list_of_results.append(
-                            {
+                        except Exception:
+                            add_record.append({
                                 "feature_selection": __selection,
                                 "normalization": __norm,
                                 "dim_red": __dim,
-                                "classification": "",
-                                "f1-score": "",
-                                "status": "Error",
+                                "classification": "-",
+                                "check_score": "-",
+                                "status": "Error in Dim Reduction",
                             })
 
                 except Exception:
-                    list_of_results.append(
+                    add_record.append(
                         {
                             "feature_selection": __selection,
                             "normalization": __norm,
                             "dim_red": __dim,
                             "classification": "",
-                            "f1-score": "",
-                            "status": "Error",
+                            "check_score": "",
+                            "status": "Error in Normalization",
                         })
 
         except Exception:
-            list_of_results.append(
+            add_record.append(
                 {
                     "feature_selection": __selection,
                     "normalization": __norm,
                     "dim_red": __dim,
                     "classification": "",
-                    "f1-score": "",
+                    "check_score": "",
                     "status": "Error",
                 }
             )

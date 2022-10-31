@@ -5,14 +5,16 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn import svm
 from sklearn.naive_bayes import GaussianNB
-
+from sklearn.model_selection import train_test_split
 
 from sklearn.model_selection import GridSearchCV
-from sklearn.metrics import precision_score
-from sklearn.metrics import accuracy_score
-from sklearn.metrics import recall_score
 from sklearn.metrics import make_scorer
-import pandas as pd
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import precision_score
+from sklearn.metrics import recall_score
+from sklearn.metrics import f1_score
+from sklearn.metrics import confusion_matrix, zero_one_loss
+from sklearn.metrics import classification_report
 
 
 def _calculate_f1(precision, recall):
@@ -38,7 +40,9 @@ def run_nn_classifier(x_train: pd.DataFrame, y_train: pd.DataFrame) -> dict:
     clf_nn.fit(x_train, y_train)
 
     res_df = pd.DataFrame(clf_nn.cv_results_)
-    res_df1 = res_df.sort_values(by='rank_test_accuracy')[['rank_test_accuracy', 'mean_test_precision','mean_test_recall']].iloc[0]
+    res_df1 = \
+    res_df.sort_values(by='rank_test_accuracy')[['rank_test_accuracy', 'mean_test_precision', 'mean_test_recall']].iloc[
+        0]
     res_df2 = res_df1.to_dict()
     res_df2["f1"] = _calculate_f1(res_df2['mean_test_precision'], res_df2['mean_test_recall'])
     return res_df2
@@ -52,7 +56,14 @@ def run_tree(x_train: pd.DataFrame, y_train: pd.DataFrame):
     clf_tree = GridSearchCV(DecisionTreeClassifier(random_state=15), tree_para, cv=10,
                             scoring=scores, refit='accuracy', return_train_score=True, n_jobs=4)
     clf_tree = clf_tree.fit(x_train, y_train)
-    print(clf_tree.best_params_)
+    ####
+    res_df = pd.DataFrame(clf_tree.cv_results_)
+    res_df1 = \
+    res_df.sort_values(by='rank_test_accuracy')[['rank_test_accuracy', 'mean_test_precision', 'mean_test_recall']].iloc[
+        0]
+    res_df2 = res_df1.to_dict()
+    res_df2["f1"] = _calculate_f1(res_df2['mean_test_precision'], res_df2['mean_test_recall'])
+    return res_df2
 
 
 def run_k_neighbours(x_train: pd.DataFrame, y_train: pd.DataFrame):
@@ -64,7 +75,14 @@ def run_k_neighbours(x_train: pd.DataFrame, y_train: pd.DataFrame):
     clf_kn = GridSearchCV(KNeighborsClassifier(), nn_para, cv=10, scoring=scores,
                           refit='accuracy', return_train_score=True, n_jobs=4)
     clf_kn = clf_kn.fit(x_train, y_train)
-    print(clf_kn.best_params_)
+    ####
+    res_df = pd.DataFrame(clf_kn.cv_results_)
+    res_df1 = \
+    res_df.sort_values(by='rank_test_accuracy')[['rank_test_accuracy', 'mean_test_precision', 'mean_test_recall']].iloc[
+        0]
+    res_df2 = res_df1.to_dict()
+    res_df2["f1"] = _calculate_f1(res_df2['mean_test_precision'], res_df2['mean_test_recall'])
+    return res_df2
 
 
 def run_svm(x_train: pd.DataFrame, y_train: pd.DataFrame):
@@ -76,25 +94,52 @@ def run_svm(x_train: pd.DataFrame, y_train: pd.DataFrame):
     clf_svc = GridSearchCV(svc, param_grid, cv=10, scoring=scores,
                            refit='accuracy', return_train_score=True, n_jobs=4)
     clf_svc.fit(x_train, y_train)
+    ###
+    res_df = pd.DataFrame(clf_svc.cv_results_)
+    res_df1 = \
+    res_df.sort_values(by='rank_test_accuracy')[['rank_test_accuracy', 'mean_test_precision', 'mean_test_recall']].iloc[
+        0]
+    res_df2 = res_df1.to_dict()
+    res_df2["f1"] = _calculate_f1(res_df2['mean_test_precision'], res_df2['mean_test_recall'])
+    return res_df2
 
 
 def run_bayesian(x_train: pd.DataFrame, y_train: pd.DataFrame) -> Dict[str, dict]:
     gnb = GaussianNB()
 
-    # Train the model using the training sets
-    gnb.fit(x_train, y_train)
-    return {"hello": {"a":  1}}
+    X_train1, X_test1, y_train1, y_test1 = train_test_split(x_train, y_train, test_size=0.5, random_state=0)
+    gnb = GaussianNB()
+    y_pred = gnb.fit(X_train1, y_train1).predict(X_test1)
+
+    results_nm = confusion_matrix(y_test1, y_pred)
+
+    precision = precision_score(y_test1, y_pred,
+                                pos_label='positive',
+                                average='micro')
+
+    recall = recall_score(y_test1, y_pred,
+                          pos_label='positive',
+                          average='micro')
+
+    res_df2 = {
+        'rank_test_accuracy': 1,
+        'mean_test_precision': precision,
+        'mean_test_recall': recall,
+        "f1": _calculate_f1(precision, recall)
+    }
+
+    return res_df2
 
 
-def run_linear_model():
-    pass
+# def run_linear_model():
+#     pass
 
 
 classifiers_dict = {
-    "nn": run_nn_classifier,
+    # "nn": run_nn_classifier,
     # "tree": run_tree,
     # "k_neighbours": run_k_neighbours,
     # "svm": run_svm,
-    # "bayesian": run_bayesian,
+    "bayesian": run_bayesian,
     # "linear_model": "linear model",
 }
