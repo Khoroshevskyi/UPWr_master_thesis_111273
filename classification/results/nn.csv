@@ -1,0 +1,4 @@
+sampling,feature_selection,normalization,dim_red,classification,precision_score,recall_score,f1_score,status
+no_sampling,no_selection,no_norm,no_dim_reduction,nn,0.5979362591431556,0.5979362591431556,0.5979362591431556,Pass
+no_sampling,no_selection,no_norm,pca,nn,0.5692398119122257,0.5692398119122257,0.5692398119122257,Pass
+no_sampling,no_selection,no_norm,umap,nn,0.5979362591431556,0.5979362591431556,0.5979362591431556,Pass
