@@ -133,9 +133,9 @@ def run_bayesian(x_train: pd.DataFrame, y_train: pd.DataFrame) -> Dict[str, dict
 
 classifiers_dict = {
     "nn": run_nn_classifier,
-    "tree": run_tree,
-    "k_neighbours": run_k_neighbours,
-    "svm": run_svm,
-    "bayesian": run_bayesian,
+    # "tree": run_tree,
+    # "k_neighbours": run_k_neighbours,
+    # "svm": run_svm,
+    # "bayesian": run_bayesian,
     # "linear_model": "linear model",
 }

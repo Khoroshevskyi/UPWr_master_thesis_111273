@@ -1,0 +1,92 @@
+[INFO] [14:28:17] Writing new row: {'sampling': 'sampling', 'feature_selection': 'feature_selection', 'normalization': 'normalization', 'dim_red': 'dim_red', 'classification': 'classification', 'precision_score': 'precision_score', 'recall_score': 'recall_score', 'f1_score': 'f1_score', 'status': 'status'}
+[INFO] [14:28:17] Reading data...
+[INFO] [14:28:23] Data numbers: stage_2    694
+stage_3    283
+stage_1    188
+stage_4     20
+Name: tumor_stage, dtype: int64
+[INFO] [14:28:24] y unique check (before replace): ['stage_1' 'stage_2' 'stage_3']
+/home/bnt4me/MasterTh/repos/master_th/classification/classif/classif_factory.py:72: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  y.replace({"stage_1": 0}, inplace=True)
+/home/bnt4me/MasterTh/repos/master_th/classification/classif/classif_factory.py:73: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  y.replace({"stage_2": 1}, inplace=True)
+/home/bnt4me/MasterTh/repos/master_th/classification/classif/classif_factory.py:74: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  y.replace({"stage_3": 2}, inplace=True)
+[INFO] [14:28:24] X null check: 0
+[INFO] [14:28:24] y unique check: [0 1 2]
+[INFO] [14:28:24] Splitting data for training and test data...
+[INFO] [14:28:24] Train data shape: (873, 60483)
+[INFO] [14:28:24] Selecting the data with Feature selection ...
+[INFO] [14:28:24] Feature selection function: no_selection
+[INFO] [14:28:24] Normalizing the data ...
+[INFO] [14:28:24] Norm function: no_norm
+[INFO] [14:28:24] Running Dim Reduction:
+[INFO] [14:28:24] Dim red function: no_dim_reduction
+[INFO] [14:28:24] Now goes classification:
+[INFO] [14:28:24] Dim red function: no_dim_reduction
+[INFO] [15:19:37] Writing new row: {'sampling': 'no_sampling', 'feature_selection': 'no_selection', 'normalization': 'no_norm', 'dim_red': 'no_dim_reduction', 'classification': 'nn', 'precision_score': 0.5979362591431556, 'recall_score': 0.5979362591431556, 'f1_score': 0.5979362591431556, 'status': 'Pass'}
+[INFO] [15:19:37] Dim red function: pca
+After feature selection with PCA, from 60483 features we left 9 features
+[INFO] [15:19:47] Now goes classification:
+[INFO] [15:19:47] Dim red function: pca
+/home/bnt4me/.local/lib/python3.8/site-packages/sklearn/neural_network/_multilayer_perceptron.py:692: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (300) reached and the optimization hasn't converged yet.
+  warnings.warn(
+/home/bnt4me/.local/lib/python3.8/site-packages/sklearn/neural_network/_multilayer_perceptron.py:692: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (300) reached and the optimization hasn't converged yet.
+  warnings.warn(
+[INFO] [15:19:52] Writing new row: {'sampling': 'no_sampling', 'feature_selection': 'no_selection', 'normalization': 'no_norm', 'dim_red': 'pca', 'classification': 'nn', 'precision_score': 0.5692398119122257, 'recall_score': 0.5692398119122257, 'f1_score': 0.5692398119122257, 'status': 'Pass'}
+[INFO] [15:19:52] Dim red function: umap
+[INFO] [15:20:03] Now goes classification:
+[INFO] [15:20:03] Dim red function: umap
+[INFO] [15:20:05] Writing new row: {'sampling': 'no_sampling', 'feature_selection': 'no_selection', 'normalization': 'no_norm', 'dim_red': 'umap', 'classification': 'nn', 'precision_score': 0.5979362591431556, 'recall_score': 0.5979362591431556, 'f1_score': 0.5979362591431556, 'status': 'Pass'}
+[INFO] [15:20:05] Norm function: min_max_norm
+[INFO] [15:20:05] Running Dim Reduction:
+[INFO] [15:20:05] Dim red function: no_dim_reduction
+[INFO] [15:20:05] Now goes classification:
+[INFO] [15:20:05] Dim red function: no_dim_reduction
+/home/bnt4me/.local/lib/python3.8/site-packages/sklearn/neural_network/_multilayer_perceptron.py:692: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (300) reached and the optimization hasn't converged yet.
+  warnings.warn(
+/home/bnt4me/.local/lib/python3.8/site-packages/sklearn/neural_network/_multilayer_perceptron.py:692: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (300) reached and the optimization hasn't converged yet.
+  warnings.warn(
+/home/bnt4me/.local/lib/python3.8/site-packages/sklearn/neural_network/_multilayer_perceptron.py:692: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (300) reached and the optimization hasn't converged yet.
+  warnings.warn(
+/home/bnt4me/.local/lib/python3.8/site-packages/sklearn/neural_network/_multilayer_perceptron.py:692: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (300) reached and the optimization hasn't converged yet.
+  warnings.warn(
+/home/bnt4me/.local/lib/python3.8/site-packages/sklearn/neural_network/_multilayer_perceptron.py:699: UserWarning: Training interrupted by user.
+  warnings.warn("Training interrupted by user.")
+/home/bnt4me/.local/lib/python3.8/site-packages/sklearn/neural_network/_multilayer_perceptron.py:699: UserWarning: Training interrupted by user.
+  warnings.warn("Training interrupted by user.")
+/home/bnt4me/.local/lib/python3.8/site-packages/sklearn/neural_network/_multilayer_perceptron.py:699: UserWarning: Training interrupted by user.
+  warnings.warn("Training interrupted by user.")
+Traceback (most recent call last):
+  File "/home/bnt4me/MasterTh/repos/master_th/classification/classif/classif_factory.py", line 202, in <module>
+    run_all_classification()
+  File "/home/bnt4me/MasterTh/repos/master_th/classification/classif/classif_factory.py", line 133, in run_all_classification
+    check_score = classifiers_dict[classifyer](data_after_dim, y_train)
+  File "/home/bnt4me/MasterTh/repos/master_th/classification/classif/classif.py", line 42, in run_nn_classifier
+    clf_nn.fit(x_train, y_train)
+  File "/home/bnt4me/.local/lib/python3.8/site-packages/sklearn/model_selection/_search.py", line 891, in fit
+    self._run_search(evaluate_candidates)
+  File "/home/bnt4me/.local/lib/python3.8/site-packages/sklearn/model_selection/_search.py", line 1392, in _run_search
+    evaluate_candidates(ParameterGrid(self.param_grid))
+  File "/home/bnt4me/.local/lib/python3.8/site-packages/sklearn/model_selection/_search.py", line 838, in evaluate_candidates
+    out = parallel(
+  File "/home/bnt4me/.local/lib/python3.8/site-packages/joblib/parallel.py", line 1056, in __call__
+    self.retrieve()
+  File "/home/bnt4me/.local/lib/python3.8/site-packages/joblib/parallel.py", line 935, in retrieve
+    self._output.extend(job.get(timeout=self.timeout))
+  File "/home/bnt4me/.local/lib/python3.8/site-packages/joblib/_parallel_backends.py", line 542, in wrap_future_result
+    return future.result(timeout=timeout)
+  File "/usr/lib/python3.8/concurrent/futures/_base.py", line 439, in result
+    self._condition.wait(timeout)
+  File "/usr/lib/python3.8/threading.py", line 302, in wait
+    waiter.acquire()
+KeyboardInterrupt

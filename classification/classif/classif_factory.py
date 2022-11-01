@@ -14,7 +14,6 @@ from sampling import sampling_func
 
 from csv import DictWriter
 
-
 _LOGGER = logmuse.init_logger(name="analysis")
 
 coloredlogs.install(
@@ -22,10 +21,6 @@ coloredlogs.install(
     datefmt="%H:%M:%S",
     fmt="[%(levelname)s] [%(asctime)s] %(message)s",
 )
-
-# X_train, X_test, y_train, y_test = train_test_split(X_pca, y, random_state=15)
-# print(f'Train: {X_train.shape}')
-# print(f'Test: {X_test.shape}')
 
 
 class AddRecord:
@@ -45,8 +40,7 @@ class AddRecord:
 
         self.append(col_names)
 
-
-    def append(self,  record: dict):
+    def append(self, record: dict):
         with open(self.file_path, 'a+') as f_object:
             dictwriter_object = DictWriter(f_object, fieldnames=self._fild_names)
 
@@ -55,7 +49,8 @@ class AddRecord:
 
             f_object.close()
 
-add_record = AddRecord("try.csv")
+
+add_record = AddRecord("../results/nn.csv")
 
 
 def read_data(data_path: str = "/home/bnt4me/MasterTh/gdc_data/last_file.csv") -> Tuple[pd.DataFrame, pd.DataFrame]:
@@ -82,8 +77,6 @@ def read_data(data_path: str = "/home/bnt4me/MasterTh/gdc_data/last_file.csv") -
     _LOGGER.info(f"y unique check: {y.unique()}")
 
     return x, y
-
-
 
 
 def run_all_classification():
@@ -203,7 +196,7 @@ def run_all_classification():
                     "classification": "",
                     "status": "Error in sampling",
                 }
-)
+            )
+
 
 run_all_classification()
-
