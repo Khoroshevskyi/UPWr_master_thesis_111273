@@ -39,16 +39,6 @@ def min_max_norm(x: pd.DataFrame) -> pd.DataFrame:
     # return (x - x.min()) / (x.max() - x.min())
     return scaler.transform(x)
 
-def z_score_norm(x: pd.DataFrame) -> pd.DataFrame:
-    """
-    Z-Score Normalization
-    If a value is exactly equal to the mean of all the values of the feature, it will be normalized to 0.
-    If it is below the mean, it will be a negative number, and if it is above the mean it will be a positive number.
-    :param x: initial dataframe
-    :return: normalized dataframe
-    """
-    return x.apply(lambda iterator: ((iterator - iterator.mean()) / iterator.std()).round(2))
-
 
 def robust_scaler(x: pd.DataFrame) -> pd.DataFrame:
     """
@@ -74,6 +64,18 @@ def standard_scaler(x: pd.DataFrame) -> pd.DataFrame:
     return StandardScaler().fit_transform(x)
 
 
+# same as standard scaler
+# def z_score_norm(x: pd.DataFrame) -> pd.DataFrame:
+#     """
+#     Z-Score Normalization
+#     If a value is exactly equal to the mean of all the values of the feature, it will be normalized to 0.
+#     If it is below the mean, it will be a negative number, and if it is above the mean it will be a positive number.
+#     :param x: initial dataframe
+#     :return: normalized dataframe
+#     """
+#     return x.apply(lambda iterator: ((iterator - iterator.mean()) / iterator.std()).round(2))
+
+
 def log2_transform(x: pd.DataFrame) -> pd.DataFrame:
     """
     The log2-median transformation is the ssn (simple scaling normalization) method in lumi.
@@ -82,15 +84,14 @@ def log2_transform(x: pd.DataFrame) -> pd.DataFrame:
     :param x: initial dataframe
     :return: normalized dataframe
     """
-    return x.transform(lambda x1: np.log2(x1 + 1))
+    xx = pd.DataFrame(x)
+    return xx.transform(lambda x1: np.log2(x1 + 1))
 
-
-# One more normalization: X_norm2 = X.apply(lambda iterator: ((iterator - iterator.mean())/iterator.std()).round(2))
 
 normal_funct = {
     "no_norm": no_norm,
     "min_max_norm": min_max_norm,
-    "z_score_norm": z_score_norm,
+    # "z_score_norm": z_score_norm,
     "robust_scaler": robust_scaler,
     "standard_scaler": standard_scaler,
     "log2_transform": log2_transform,

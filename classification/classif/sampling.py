@@ -8,7 +8,7 @@ import pandas as pd
 from typing import List
 
 
-def apply_oversampling(x: pd.DataFrame, y: pd.DataFrame) -> List[pd.DataFrame]:
+def apply_oversampling(x: pd.DataFrame, y: pd.DataFrame):
     """
     Apply oversampling
     :param x: DataFrame of x
@@ -22,7 +22,7 @@ def apply_oversampling(x: pd.DataFrame, y: pd.DataFrame) -> List[pd.DataFrame]:
     return x_class, label_y
 
 
-def apply_undersampling(x: pd.DataFrame, y: pd.DataFrame) -> List[pd.DataFrame]:
+def apply_undersampling(x: pd.DataFrame, y: pd.DataFrame):
     """
     Apply undersampled
     :param x: DataFrame of x
@@ -37,7 +37,18 @@ def apply_undersampling(x: pd.DataFrame, y: pd.DataFrame) -> List[pd.DataFrame]:
     return x_class, label_y
 
 
+def return_same(x: pd.DataFrame, y: pd.DataFrame):
+    """
+    Return as it is.
+    :param x: DataFrame of x
+    :param y: DataFrame of y
+    :return: x, y
+    """
+    return x, y
+
+
 sampling_func = {
-    "oversampling": oversampling,
-    "undersampling": oversampling,
+    "no_sampling": return_same,
+    "oversampling": apply_oversampling,
+    "undersampling": apply_undersampling,
 }

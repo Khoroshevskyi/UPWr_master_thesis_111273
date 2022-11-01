@@ -28,6 +28,24 @@ def var_threshold(x: pd.DataFrame, y, threshold: float = 0.5) -> pd.DataFrame:
     return X_norm_var
 
 
+# def variance_select(x: pd.DataFrame, threshold: int = 50):
+#     """
+#     Feature selection by variance
+#     :param x: X dataframe
+#     :param threshold: Variance threshold
+#     :return: selected x
+#     """
+#     selector = VarianceThreshold(threshold)
+#     selector.fit(x)
+#
+#     x_n = x[x.columns[selector.get_support()]]
+#
+#     print(f"after variance selection:")
+#
+#     print(x_n)
+#     return x_n
+
+
 def select_univariate(x: pd.DataFrame, y) -> pd.DataFrame:
     return SelectKBest(chi2, k=10).fit_transform(x, y)
 
@@ -42,6 +60,7 @@ def select_l1(x: pd.DataFrame, y) -> pd.DataFrame:
 selection_dict = {
     "no_selection": no_selection,
     "var_threshold": var_threshold,
+    # "var2": variance_select,
     "select_univariate": select_univariate,
     "select_l1": select_l1,
 }

@@ -16,6 +16,8 @@ from sklearn.metrics import f1_score
 from sklearn.metrics import confusion_matrix, zero_one_loss
 from sklearn.metrics import classification_report
 
+from sklearn.metrics import precision_recall_curve
+
 
 def _calculate_f1(precision, recall):
     """
@@ -105,27 +107,21 @@ def run_svm(x_train: pd.DataFrame, y_train: pd.DataFrame):
 
 
 def run_bayesian(x_train: pd.DataFrame, y_train: pd.DataFrame) -> Dict[str, dict]:
-    gnb = GaussianNB()
 
     X_train1, X_test1, y_train1, y_test1 = train_test_split(x_train, y_train, test_size=0.5, random_state=0)
     gnb = GaussianNB()
     y_pred = gnb.fit(X_train1, y_train1).predict(X_test1)
 
-    results_nm = confusion_matrix(y_test1, y_pred)
+    f1 = f1_score(y_test1, y_pred, average="macro")
+    precision = precision_score(y_test1, y_pred, average="macro")
+    recall = recall_score(y_test1, y_pred, average="macro")
 
-    precision = precision_score(y_test1, y_pred,
-                                pos_label='positive',
-                                average='micro')
-
-    recall = recall_score(y_test1, y_pred,
-                          pos_label='positive',
-                          average='micro')
 
     res_df2 = {
         'rank_test_accuracy': 1,
         'mean_test_precision': precision,
         'mean_test_recall': recall,
-        "f1": _calculate_f1(precision, recall)
+        "f1": f1
     }
 
     return res_df2
@@ -136,10 +132,10 @@ def run_bayesian(x_train: pd.DataFrame, y_train: pd.DataFrame) -> Dict[str, dict
 
 
 classifiers_dict = {
-    # "nn": run_nn_classifier,
-    # "tree": run_tree,
-    # "k_neighbours": run_k_neighbours,
-    # "svm": run_svm,
+    "nn": run_nn_classifier,
+    "tree": run_tree,
+    "k_neighbours": run_k_neighbours,
+    "svm": run_svm,
     "bayesian": run_bayesian,
     # "linear_model": "linear model",
 }

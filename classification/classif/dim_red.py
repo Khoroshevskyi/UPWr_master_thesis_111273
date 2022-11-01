@@ -66,23 +66,8 @@ def run_umap(df, neighbours=10, metric='euclidean'):
     return embedding
 
 
-def variance_select(x: pd.DataFrame, threshold: int = 500):
-    """
-    Feature selection by variance
-    :param x: X dataframe
-    :param threshold: Variance threshold
-    :return: selected x
-    """
-    selector = VarianceThreshold(threshold)
-    selector.fit(x)
-
-    x_n = x[x.columns[selector.get_support()]]
-    return x_n
-
-
 feature_select_methods = {
-    # "no_dim_reduction": no_dim_red,
+    "no_dim_reduction": no_dim_red,
     "pca": run_pca,
     "umap": run_umap,
-    "var": variance_select,
 }
