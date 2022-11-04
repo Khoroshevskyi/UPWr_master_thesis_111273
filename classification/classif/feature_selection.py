@@ -58,7 +58,7 @@ def select_l1(x: pd.DataFrame, y) -> pd.DataFrame:
 
 
 selection_dict = {
-    "no_selection": no_selection,
+    # "no_selection": no_selection,
     "var_threshold": var_threshold,
     # "var2": variance_select,
     "select_univariate": select_univariate,
