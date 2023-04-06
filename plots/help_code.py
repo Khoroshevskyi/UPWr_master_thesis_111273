@@ -52,3 +52,23 @@ def apply_oversampling(X, y):
     return X_class, label_cat
 
 X_train_1, y_train_1 = apply_oversampling(X, y)
+
+
+def visualize_data(data):
+    """
+    """
+    data = data.to_dict()
+    keys1 = zmien_nazwe(list(data.keys()))
+    values1 = list(data.values())
+    
+    fig, axs = plt.subplots(1,1, figsize=(6,5))
+    
+    fig1 =  axs.bar(keys1, values1, color ='g', width = 0.5, )
+    axs.set_ylabel('Ilość próbek', fontsize=10)
+    axs.set_xlabel('Stadium', fontsize=10)
+    
+    plt.title("Ilość próbek w początkowym zbiorze danych")
+    
+    plt.savefig("number_of_samples.svg")
+    
+visualize_data(data.tumor_stage.value_counts().sort_index())
